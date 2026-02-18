@@ -12,4 +12,8 @@ export class BooksController {
     return await this.booksService.createBook(createBookDto);
   }
 
+  @Get()
+  async findAllBooks(): Promise<Book[]> {
+    return this.booksService.findAllBooks();
+  }
 }

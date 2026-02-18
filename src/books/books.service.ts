@@ -25,4 +25,10 @@ export class BooksService {
     return await new this.booksModel(createBookDto).save();
   }
 
+  // Get all books
+  async findAllBooks(): Promise<Book[]> {
+    return this.booksModel
+      .find({ availableQuantity: { $gt: 0 } }) // Only books in stock
+      .exec();
+  }
 }
