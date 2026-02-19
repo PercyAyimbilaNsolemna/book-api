@@ -13,6 +13,8 @@ describe('BooksController', () => {
     createBook: jest.fn(),
     findAllBooks: jest.fn(),
     findBookById: jest.fn(),
+    updateBook: jest.fn(),
+    deleteBook: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -138,5 +140,21 @@ describe('BooksController', () => {
     });
   });
 });
+
+describe('deleteBook', () => {
+  const bookID = '69961f858bc13510f164da47';
+
+  it('should call service.deleteBook and return deleted book', async () => {
+    const deletedBook = { _id: bookID, bookName: 'Deleted Book' };
+    mockBooksService.deleteBook.mockResolvedValue(deletedBook);
+
+    const result = await controller.deleteBook(bookID);
+
+    expect(mockBooksService.deleteBook).toHaveBeenCalledWith(bookID);
+    expect((result as any)._id).toEqual(bookID);
+    expect(result.bookName).toEqual('Deleted Book');
+  });
+});
+
 
 });
