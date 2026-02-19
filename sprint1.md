@@ -221,45 +221,50 @@ Failed tests should fail the pipeline
 
 Produce evidence showing what was delivered.
 
-**Examples:**
+**Artifacts:**
 
 <table>
 <tr>
-<td width="33%">
+<td width="63%">
 
 Screenshots of working endpoints (Postman)
 
-</td>
-<td width="33%">
-
-API responses
+![Performance Metrics](images/create_book.png)
 
 </td>
 <td width="33%">
 
-Short written demo explaining features completed
+Creates a new book
 
 </td>
 </tr>
 </table>
 
-**Artifacts:**
+<table>
+<tr>
+<td width="63%">
+
+![Performance Metrics](images/get_all_books.png)
+
+</td>
+<td width="33%">
+
+Returns all the books in the database
+
+</td>
+</tr>
+</table>
 
 <table>
 <tr>
-<td width="33%">
+<td width="63%">
 
-Screenshots
-
-</td>
-<td width="33%">
-
-Demo write-up
+![Performance Metrics](images/get_book_by_id.png)
 
 </td>
 <td width="33%">
 
-Repository link
+Returns a book with the specified id
 
 </td>
 </tr>
