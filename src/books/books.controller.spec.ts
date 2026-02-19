@@ -101,4 +101,42 @@ describe('BooksController', () => {
       expect(result.bookName).toEqual('Single Book');
     });
   });
+
+  describe('BooksController', () => {
+  let controller: BooksController;
+  let service: BooksService;
+
+  const mockBooksService = {
+    updateBook: jest.fn(),
+  };
+
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      controllers: [BooksController],
+      providers: [{ provide: BooksService, useValue: mockBooksService }],
+    }).compile();
+
+    controller = module.get<BooksController>(BooksController);
+    service = module.get<BooksService>(BooksService);
+
+    jest.clearAllMocks();
+  });
+
+  describe('updateBook', () => {
+    const bookID = '69961f858bc13510f164da47';
+    const updateBookDto = { bookPrice: 55, availableQuantity: 5 };
+
+    it('should call service.updateBook and return updated book', async () => {
+      const updatedBook = { _id: bookID, bookName: 'Test Book', ...updateBookDto };
+      mockBooksService.updateBook.mockResolvedValue(updatedBook);
+
+      const result = await controller.updateBook(bookID, updateBookDto as any);
+
+      expect(mockBooksService.updateBook).toHaveBeenCalledWith(bookID, updateBookDto);
+      expect(result.bookPrice).toEqual(55);
+      expect(result.availableQuantity).toEqual(5);
+    });
+  });
+});
+
 });
