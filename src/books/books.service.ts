@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Book, BookDocument } from './schemas/books.schema';
@@ -6,13 +6,13 @@ import { CreateBookDto } from './dto/create-book.dto';
 
 @Injectable()
 export class BooksService {
-  findBook(bookID: string): Book | PromiseLike<Book> {
-    throw new Error('Method not implemented.');
-  }
+    private readonly logger = new Logger(BooksService.name);
+    
     constructor(@InjectModel(Book.name) private booksModel: Model<BookDocument>) {}
 
     // Create a new book
     async createBook(createBookDto: CreateBookDto): Promise<Book> {
+    this.logger.log(`Creating book: ${createBookDto.bookName}`);
     //Checks if book already exist
     const foundBook = await this.booksModel.findOne({
       bookName: createBookDto.bookName,
@@ -30,6 +30,7 @@ export class BooksService {
 
   // Get all books
   async findAllBooks(): Promise<Book[]> {
+    this.logger.log('Fetching all books');
     return this.booksModel
       .find({ availableQuantity: { $gt: 0 } }) // Only books in stock
       .exec();
@@ -37,7 +38,7 @@ export class BooksService {
 
   // Get book by ID
   async findBookById(id: string): Promise<BookDocument> {
-
+  this.logger.log(`Fetching book by ID: ${id}`);
   // Validate MongoDB ObjectId
   if (!Types.ObjectId.isValid(id)) {
     throw new NotFoundException('Invalid book id');
