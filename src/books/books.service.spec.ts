@@ -166,4 +166,52 @@ describe('BookService', () => {
   });
 });
 
+// ------------------------------
+// updateBook
+// ------------------------------
+describe('updateBook', () => {
+  const bookID = '69961f858bc13510f164da47';
+  const updateBookDto = { bookPrice: 55, availableQuantity: 5 };
+
+  it('should update and return the book successfully', async () => {
+    // Simulate book exists
+    findByIdMock.mockResolvedValue({ _id: bookID, bookName: 'Test Book' });
+
+    // Simulate findByIdAndUpdate returns updated book
+    findByIdAndUpdateMock.mockResolvedValue({
+      _id: bookID,
+      bookName: 'Test Book',
+      ...updateBookDto,
+    });
+
+    const result = await service.updateBook(bookID, updateBookDto as any);
+
+    expect(findByIdMock).toHaveBeenCalledWith(bookID);
+    expect(findByIdAndUpdateMock).toHaveBeenCalledWith(bookID, updateBookDto, {
+      new: true,
+    });
+    expect(result.bookPrice).toEqual(55);
+    expect(result.availableQuantity).toEqual(5);
+  });
+
+  it('should throw NotFoundException if book does not exist', async () => {
+    findByIdMock.mockResolvedValue(null);
+
+    await expect(service.updateBook(bookID, updateBookDto as any)).rejects.toThrow(
+      'The book does not exist in the database',
+    );
+
+    expect(findByIdAndUpdateMock).not.toHaveBeenCalled();
+  });
+
+  it('should throw BadRequestException if bookID is invalid', async () => {
+    const invalidID = '123-invalid-id';
+    // Only needed if you implement Types.ObjectId validation
+    await expect(service.updateBook(invalidID, updateBookDto as any)).rejects.toThrow(
+      'Invalid book ID',
+    );
+  });
+});
+
+
 });
