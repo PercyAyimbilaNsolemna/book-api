@@ -82,4 +82,29 @@ export class BooksService {
 
     return updatedBook;
   }
+
+  async deleteBook(id: string): Promise<Book> {
+
+    this.logger.log(`Deleting book with ID ${id}`);
+    
+    if (!Types.ObjectId.isValid(id)) {
+    throw new BadRequestException('Invalid book ID');
+    }
+    
+    //Check if book is in the database
+    const foundBook = await this.booksModel.findById(id);
+
+    if (!foundBook) {
+      throw new NotFoundException(`The book does not exist in the database`);
+    }
+
+    const deletedBook = await this.booksModel.findByIdAndDelete(id);
+    
+    if (!deletedBook) {
+      throw new NotFoundException('Failed to delete book');
+    }
+
+    return deletedBook;
+  }
+  
 }
