@@ -1,7 +1,9 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { Book } from './schemas/books.schema';
+import { UpdateBookDto } from './dto/update-book.dto';
+import { ParseObjectIdPipe } from '@nestjs/mongoose';
 
 @Controller('books')
 export class BooksController {
@@ -21,4 +23,13 @@ export class BooksController {
   async findBook(@Param('bookID') bookID: string): Promise<Book> {
     return await this.booksService.findBookById(bookID);
   }
+
+  @Patch(':id')
+  async updateBook(
+    @Param('id', new ParseObjectIdPipe()) id: string,
+    @Body() updateBookDto: UpdateBookDto,
+  ): Promise<Book> {
+    return this.booksService.updateBook(id, updateBookDto);
+  }
+
 }
