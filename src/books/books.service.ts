@@ -1,8 +1,9 @@
-import { ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Book, BookDocument } from './schemas/books.schema';
 import { CreateBookDto } from './dto/create-book.dto';
+import { UpdateBookDto } from './dto/update-book.dto';
 
 @Injectable()
 export class BooksService {
@@ -52,4 +53,33 @@ export class BooksService {
 
   return book;
 }
+
+  async updateBook(
+    bookID: string,
+    updateBookDto: UpdateBookDto,
+  ): Promise<Book> {
+
+    this.logger.log(`Updating book ID ${bookID} with data: ${JSON.stringify(updateBookDto)}`);
+
+    
+    if (!Types.ObjectId.isValid(bookID)) {
+    throw new BadRequestException('Invalid book ID');
+    }
+    //Check if book exist
+    const foundBook = await this.booksModel.findById(bookID);
+
+    if (!foundBook) {
+      throw new NotFoundException('The book does not exist in the database');
+    }
+
+    const updatedBook = await this.booksModel.findByIdAndUpdate(bookID, updateBookDto, {
+      new: true,
+    });
+
+    if (!updatedBook) {
+      throw new NotFoundException('Failed to update book');
+    }
+
+    return updatedBook;
+  }
 }
