@@ -78,5 +78,27 @@ describe('BooksController', () => {
     });
   });
 
- 
+  // ------------------------------------------------
+  // GET BOOK BY ID
+  // ------------------------------------------------
+  describe('findBook', () => {
+    it('should return a single book', async () => {
+      const bookId = '69961f858bc13510f164da47';
+
+      const book = {
+        _id: bookId,
+        bookName: 'Single Book',
+        bookCategory: 'Drama',
+        bookPrice: 20,
+        bookDescription: 'Controller test',
+      };
+
+      mockBooksService.findBookById.mockResolvedValue(book);
+
+      const result = await controller.findBook(bookId);
+
+      expect(service.findBookById).toHaveBeenCalledWith(bookId);
+      expect(result.bookName).toEqual('Single Book');
+    });
+  });
 });
