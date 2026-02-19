@@ -212,6 +212,41 @@ describe('updateBook', () => {
     );
   });
 });
+    // ------------------------------
+    // deleteBook
+    // ------------------------------
+    describe('deleteBook', () => {
+    const bookID = '69961f858bc13510f164da47';
 
+    it('should delete and return the book successfully', async () => {
+        // Simulate book exists
+        findByIdMock.mockResolvedValue({ _id: bookID, bookName: 'Test Book' });
+
+        // Simulate findByIdAndDelete returns the deleted book
+        findByIdAndDeleteMock.mockResolvedValue({ _id: bookID, bookName: 'Test Book' });
+
+        const result = await service.deleteBook(bookID);
+
+        expect(findByIdMock).toHaveBeenCalledWith(bookID);
+        expect(findByIdAndDeleteMock).toHaveBeenCalledWith(bookID);
+        expect((result as any)._id).toEqual(bookID);
+    });
+
+    it('should throw NotFoundException if book does not exist', async () => {
+        findByIdMock.mockResolvedValue(null);
+
+        await expect(service.deleteBook(bookID)).rejects.toThrow(
+        'The book does not exist in the database',
+        );
+
+        expect(findByIdAndDeleteMock).not.toHaveBeenCalled();
+    });
+
+    it('should throw BadRequestException for invalid book ID', async () => {
+        const invalidID = '123-invalid-id';
+        // Only needed if you implement Types.ObjectId.isValid() check
+        await expect(service.deleteBook(invalidID)).rejects.toThrow('Invalid book ID');
+    });
+    });
 
 });
