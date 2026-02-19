@@ -75,6 +75,21 @@ Extends <code>PartialType(CreateBookDto)</code> for partial updates
 </tr>
 </table>
 
+<table>
+<tr>
+<td width="63%">
+
+![Performance Metrics](images/update_book.png)
+
+</td>
+<td width="33%">
+
+Updates a book
+
+</td>
+</tr>
+</table>
+
 ---
 
 ### 1.2 Delete Book
@@ -107,6 +122,21 @@ Extends <code>PartialType(CreateBookDto)</code> for partial updates
 <td>
 • Optional logging<br>
 • Validation for MongoDB ObjectId
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td width="63%">
+
+![Performance Metrics](images/delete_book.png)
+
+</td>
+<td width="33%">
+
+Deletes a book
+
 </td>
 </tr>
 </table>
@@ -150,6 +180,21 @@ Extends <code>PartialType(CreateBookDto)</code> for partial updates
 
 • <code>updateBook</code><br>
 • <code>deleteBook</code>
+
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td width="63%">
+
+![Performance Metrics](images/github_action.png)
+
+</td>
+<td width="33%">
+
+Sample Action on GitHub
 
 </td>
 </tr>
@@ -351,7 +396,20 @@ API endpoints tested using Postman:
 
 **Evidence:**
 
-Screenshots, logs, and CI/CD pipeline results can be included in submission.
+<table>
+<tr>
+<td width="63%">
+
+![Performance Metrics](images/main.png)
+
+</td>
+<td width="33%">
+
+main.yml
+
+</td>
+</tr>
+</table>
 
 ---
 
