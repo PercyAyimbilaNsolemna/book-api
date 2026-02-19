@@ -59,4 +59,24 @@ describe('BooksController', () => {
     });
   });
 
+  // ------------------------------------------------
+  // GET ALL BOOKS
+  // ------------------------------------------------
+  describe('findAllBooks', () => {
+    it('should return all books', async () => {
+      const books = [
+        { bookName: 'Book One', availableQuantity: 2 },
+        { bookName: 'Book Two', availableQuantity: 1 },
+      ];
+
+      mockBooksService.findAllBooks.mockResolvedValue(books);
+
+      const result = await controller.findAllBooks();
+
+      expect(service.findAllBooks).toHaveBeenCalled();
+      expect(result).toHaveLength(2);
+    });
+  });
+
+ 
 });
